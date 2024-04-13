@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Results</h1>
+    <table>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Date of Birth</th>
+            <th>Age</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.fullName }}</td>
+                <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.dob|date('Y-m-d') }}</td>
+                {% set now = "now" | date('Y-m-d') %}
+                {% set dob = user.dob | date('Y-m-d') %}
+                {% set age = now | date('Y') - dob | date('Y') %}
+                {% if now | date('m-d') < dob | date('m-d') %}
+                    {% set age = age - 1 %}
+                {% endif %}
+                <td>{{ age }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
