@@ -1,29 +1,56 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Results</h1>
-    <table>
-        <tr>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Date of Birth</th>
-            <th>Age</th>
-        </tr>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.fullName }}</td>
-                <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
-                <td>{{ user.phone }}</td>
-                <td>{{ user.dob|date('Y-m-d') }}</td>
-                {% set now = "now" | date('Y-m-d') %}
-                {% set dob = user.dob | date('Y-m-d') %}
-                {% set age = now | date('Y') - dob | date('Y') %}
-                {% if now | date('m-d') < dob | date('m-d') %}
-                    {% set age = age - 1 %}
-                {% endif %}
-                <td>{{ age }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+    <div class="container">
+        <h1>Results</h1>
+        <div class="container mx-auto">
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Date of Birth</th>
+                        <th>Age</th>
+                    </tr>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.fullName }}</td>
+                            <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+                            <td>{{ user.phone }}</td>
+                            <td>{{ user.dob|date('Y-m-d') }}</td>
+                            {% set now = "now" | date('Y-m-d') %}
+                            {% set dob = user.dob | date('Y-m-d') %}
+                            {% set age = now | date('Y') - dob | date('Y') %}
+                            {% if now | date('m-d') < dob | date('m-d') %}
+                                {% set age = age - 1 %}
+                            {% endif %}
+                            <td>{{ age }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    {% if totalPages > 1 %}
+        <nav aria-label="Pagination">
+            <ul class="pagination pagination-sm justify-content-center">
+                <li class="page-item {{ currentPage <= 1 ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ path('form_results', { page: currentPage - 1 < 1 ? 1 : currentPage - 1 }) }}" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+                {% for i in 1..totalPages %}
+                    <li class="page-item {{ currentPage == i ? 'active' : '' }}">
+                        <a class="page-link" href="{{ path('form_results', { page: i }) }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+                <li class="page-item {{ currentPage >= totalPages ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ path('form_results', { page: currentPage + 1 <= totalPages ? currentPage + 1 : currentPage }) }}" aria-label="Next">
+                        <span aria-hidden="true">»</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
 {% endblock %}

@@ -4,7 +4,7 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20240412225552 extends AbstractMigration
+final class Version20240413122936 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -18,7 +18,8 @@ final class Version20240412225552 extends AbstractMigration
             email VARCHAR(255) NOT NULL,
             phone VARCHAR(255) NOT NULL,
             dob DATE NOT NULL,
-            PRIMARY KEY (id)
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            PRIMARY KEY(id)
         )
         DEFAULT CHARACTER SET utf8mb4
         COLLATE utf8mb4_unicode_ci
